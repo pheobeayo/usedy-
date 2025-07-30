@@ -5,6 +5,7 @@ import { BiBox } from "react-icons/bi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { TbSettings } from "react-icons/tb";
 import { ImCart } from "react-icons/im";
+import { BsBell } from "react-icons/bs";
 import { BsReceipt } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import { useDisconnect } from "@reown/appkit/react";
@@ -69,6 +70,10 @@ const MobileSidebar = () => {
           <button className="text-[14px] text-[#0F160F]  flex items-center py-4 mb-4 px-6 hover:text-[#154A80]" onClick={disconnect}>
             <TbSettings className="mr-4" /> Log out
           </button>
+          {/* <p className="lg:text-[14px] md:text-[14px] text-[14px] text-[#0F160F] items-center py-2  px-6  hover:text-[#154A80] font-bold">Wallet Address:</p>
+          <p className="lg:text-[14px] md:text-[14px] text-[14px] text-[#154A80] items-center py-2  px-6  hover:text-[#0F160F]">0xf768912a201645nnq710</p>
+          <p className="lg:text-[14px] md:text-[14px] text-[14px] text-[#0F160F] items-center py-2 px-6  hover:text-[#154A80] font-bold">You currently have:</p>
+          <p className="lg:text-[14px] md:text-[14px] text-[14px] text-[#154A80] items-center py-2  px-6  hover:text-[#0F160F] ">20 GR points</p> */}
         </div>
       )}
     </header>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useGetAllProduct from "../../hooks/useGetAllProduct";
+import { useProduct } from "../../context/ContextProvider";
 import LoadingSpinner from "../../components/Loader/LoadingSpinner";
 import { formatUnits } from "ethers";
 import Banner from "../../components/Banner";
@@ -11,18 +11,18 @@ import { useAppKitAccount } from "@reown/appkit/react";
 const MarketplaceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { allProduct }= useGetAllProduct();
+  const { products }= useProduct();
   const [transaction, setTransaction] = useState(null);
   const { address } = useAppKitAccount();
 
   useEffect(() => {
-    if (allProduct.length > 0) {
-      const foundTransaction = allProduct.find(
+    if (products.length > 0) {
+      const foundTransaction = products.find(
         (data) => String(data?.id) === id
       );
       setTransaction(foundTransaction);
     }
-  }, [allProduct, id]);
+  }, [products, id]);
 
   const truncateAddress = (address) => {
     if (!address) return "";

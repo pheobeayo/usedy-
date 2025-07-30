@@ -22,6 +22,6 @@ createAppKit({
   metadata,
   projectId,
   features: {
-    analytics: true, // Optional - defaults to your Cloud configuration
+    analytics: true, 
   }
 });

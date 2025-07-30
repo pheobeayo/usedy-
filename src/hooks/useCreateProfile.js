@@ -5,12 +5,15 @@ import { toast } from "react-toastify";
 import { morphHolesky } from "@reown/appkit/networks";
 import { ErrorDecoder } from "ethers-decode-error";
 import abi from "../constants/abi.json";
+import { useProduct } from "../context/ContextProvider";
 
 const useCreateProfile = () => {
   const contract = useContractInstance(true);
   const { address } = useAppKitAccount();
   const { chainId } = useAppKitNetwork();
   const errorDecoder = ErrorDecoder.create([abi]);
+  
+  const { refreshSellers } = useProduct();
 
   return useCallback(
     async (sellerName, location, mail) => {
@@ -30,7 +33,7 @@ const useCreateProfile = () => {
       }
 
       if (Number(chainId) !== Number(morphHolesky.id)) {
-        toast.error("You're not connected to morph Testnet");
+        toast.error("You're not connected to BSC Testnet");
         return;
       }
 
@@ -40,6 +43,7 @@ const useCreateProfile = () => {
 
         if (receipt.status === 1) {
           toast.success("Profile Creation Successful");
+          refreshSellers()
           return;
         }
 
@@ -52,7 +56,7 @@ const useCreateProfile = () => {
         });
       }
     },
-    [contract, address, chainId]
+    [contract, address, chainId, refreshSellers]
   );
 };
 

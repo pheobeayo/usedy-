@@ -30,7 +30,7 @@ const useEditProfile = () => {
       }
 
       if (Number(chainId) !== Number(morphHolesky.id)) {
-        toast.error("You're not connected to Morph Network");
+        toast.error("You're not connected to BSC Network");
         return;
       }
 

@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import bgIcon from '../../assets/transaction.png'
 import { useNavigate } from 'react-router-dom'
-import useGetAllProduct from "../../hooks/useGetAllProduct";
-import useGetSeller from "../../hooks/useGetSeller";
+import { useProduct } from "../../context/ContextProvider";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -13,9 +12,8 @@ import TabPanel from '@mui/lab/TabPanel';
 
 const Transactions = () => {
   const navigate = useNavigate();
-  const { allSeller } = useGetSeller();
   const { address } = useAppKitAccount();
-  const { allProduct } = useGetAllProduct();
+  const { products, sellers } = useProduct();
   const [value, setValue] = useState('1');
 
   const handleChange = (event, newValue) => {
@@ -24,7 +22,7 @@ const Transactions = () => {
  
 
   const [buyerAddress, setBuyerAddress] = useState(`${address}`);
-  const userSeller = allSeller.find((data) => data?.address.toLowerCase() === address.toLowerCase());
+  const userSeller = sellers.find((data) => data?.address.toLowerCase() === address.toLowerCase());
 
  
   return (

@@ -66,7 +66,7 @@ const MarketplaceHome = () => {
                     Seller &apos;s location <span>{info.location}</span>
                   </p>
                   <p className="flex justify-between my-4 font-bold">
-                    Price <span>{formatUnits(info.price)} TBNB</span>
+                    Price <span>{formatUnits(info.price)} ETH</span>
                   </p>
                   <button className="my-4 border w-[100%] py-2 px-4 border-[#3F9AAE] bg-white text-[#3F9AAE] rounded-lg">
                     View details

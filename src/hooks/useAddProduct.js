@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { morphHolesky } from "@reown/appkit/networks";
 import { ErrorDecoder } from "ethers-decode-error";
 import abi from "../constants/abi.json";
+import { useProduct } from "../context/ContextProvider";
+import useGetUsedyToken from "./useGetUsedyToken";
 
 const useAddProduct = () => {
   const contract = useContractInstance(true);
@@ -12,7 +14,10 @@ const useAddProduct = () => {
   const { chainId } = useAppKitNetwork();
   const errorDecoder = ErrorDecoder.create([abi]);
 
-  return useCallback(
+  const { refreshProducts } = useProduct(); 
+  const { refreshBalance } = useGetUsedyToken()
+
+  const addProduct = useCallback(
     async (productName, imageUrl, productDesc, amount, productWeight) => {
       if (!productName || !imageUrl || !productDesc || !amount || !productWeight) {
         toast.error("Invalid input!");
@@ -30,21 +35,27 @@ const useAddProduct = () => {
       }
 
       if (Number(chainId) !== Number(morphHolesky.id)) {
-        toast.error("You're not connected to Morph Testnet");
+        toast.error("You're not connected to BSC Testnet");
         return;
       }
 
       try {
-        const tx = await contract.listProduct(productName, imageUrl, productDesc, amount, productWeight);
+        const tx = await contract.listProduct(
+          productName,
+          imageUrl,
+          productDesc,
+          amount,
+          productWeight
+        );
         const receipt = await tx.wait();
 
         if (receipt.status === 1) {
-          toast.success("Product Listing Successful");
-          return;
+          toast.success("Product listed successfully. UTN has been minted to you");
+          refreshProducts(); 
+          refreshBalance();
+        } else {
+          toast.error("Failed to list product");
         }
-
-        toast.error("Failed to List product");
-        return;
       } catch (err) {
         const decodedError = await errorDecoder.decode(err);
         toast.error(`Failed to List Product - ${decodedError.reason}`, {
@@ -52,8 +63,10 @@ const useAddProduct = () => {
         });
       }
     },
-    [contract, address, chainId]
+    [contract, address, chainId, refreshProducts]
   );
+
+  return addProduct;
 };
 
 export default useAddProduct;

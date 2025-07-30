@@ -1,12 +1,13 @@
+
 import CreateProfile from "../../components/CreateProfile";
 import profileBg from "../../assets/profile.png";
-import useGetSeller from '../../hooks/useGetSeller'
 import { formatUnits } from "ethers";
 import EditProfile from "../../components/EditProfile";
 import { useAppKitAccount } from "@reown/appkit/react";
+import { useProduct } from "../../context/ContextProvider";
 
 const CreateSellerProfile = () => {
-  const { allSeller } = useGetSeller();
+  const { sellers } = useProduct();
   const { address } = useAppKitAccount();
 
   const truncateAddress = (address) => {
@@ -47,7 +48,7 @@ const CreateSellerProfile = () => {
         All Seller's Profile
       </h2>
       <div className="flex lg:flex-row md:flex-row flex-col justify-between items-center my-10 text-[#0F160F] flex-wrap">
-        {allSeller?.map((info) => (
+        {sellers?.map((info) => (
           <div
             className="lg:w-[32%] md:w-[32%] w-[100%] p-4 border border-[#0F160F]/20 rounded-lg mb-4 shadow-lg"
             key={info.id}
@@ -60,8 +61,8 @@ const CreateSellerProfile = () => {
             <h3 className="font-bold lg:text-[20px] md:text-[20px] text-[18px] capitalize text-center">
               {info.name}
             </h3>
-            <p className="flex justify-between my-4">
-              Mail <span>{info.mail}</span>
+            <p className="flex justify-between my-4 truncate">
+              Mail <span className="ml-2">{info.mail}</span>
             </p>
             <p className="flex justify-between my-4">
               Location <span>{info.location}</span>

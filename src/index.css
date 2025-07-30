@@ -6,16 +6,10 @@
   --color-primary: #2E343A;
   --color-secondary: #073F77;
   --color-light: #E0ECF6;
-  --font-titiliumweb: "Titillium Web", "sans-serif";
-  --font-opensans: "Open Sans", "sans-serif";
+  --font-titiliumweb: "Titillium Web", sans-serif;
+  --font-opensans: "Open Sans", sans-serif;
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
-}
-
-.background {
-  background-color: var(--color-light);
-  color: var(--color-primary);
-  font-family: var(--font-opensans);
 }

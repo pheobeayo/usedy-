@@ -1,27 +1,26 @@
 import { useState, useEffect } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { Link } from "react-router-dom";
-import useGetAllProduct from "../hooks/useGetAllProduct";
-import useGetSeller from "../hooks/useGetSeller";
+import { useProduct } from "../context/ContextProvider";
 import LoadingSpinner from "./Loader/LoadingSpinner";
 import { formatUnits } from "ethers";
 import emptyCart from "../assets/cart.png";
 
 const UserSellerProfile = () => {
-  const { allProduct } = useGetAllProduct();
-  const { allSeller } = useGetSeller();
   const { address } = useAppKitAccount();
   const [isLoading, setIsLoading] = useState(true);
+  const { sellers, products } = useProduct()
+  console.log(sellers, "Product:", products)
 
   useEffect(() => {
-    if (allProduct.length > 0 && allSeller.length > 0) {
+    if (products.length > 0 && sellers.length > 0) {
       setIsLoading(false);
     }
-  }, [allProduct, allSeller]);
+  }, [products, sellers]);
 
 
-  const userSeller = allSeller.find((data) => data?.address.toLowerCase() === address?.toLowerCase());
-  const userProducts = allProduct.filter((info) => info?.address.toLowerCase() === address?.toLowerCase());
+  const userSeller = sellers.find((data) => data?.address.toLowerCase() === address?.toLowerCase());
+  const userProducts = products.filter((info) => info?.address.toLowerCase() === address?.toLowerCase());
 
   return (
     <div>

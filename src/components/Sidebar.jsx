@@ -3,6 +3,7 @@ import { BiBox } from "react-icons/bi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { TbSettings } from "react-icons/tb";
 import { ImCart } from "react-icons/im";
+import { BsBell } from "react-icons/bs";
 import { BsReceipt } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/whitelogo.svg";
@@ -14,7 +15,7 @@ import { formatUnits } from "ethers";
 const Sidebar = () => {
   const { disconnect } = useDisconnect();
   const { address } = useAppKitAccount()
-  const userBal = useGetUsedyToken()
+  const { userBal } = useGetUsedyToken()
 
   const activeStyle = {
     borderLeft: "1px solid #FFFFFF",

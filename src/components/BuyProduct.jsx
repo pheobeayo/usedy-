@@ -59,7 +59,7 @@ const BuyProduct = ({ id, price }) => {
     }
 
     if (Number(chainId) !== Number(morphHolesky.id)) {
-      toast.error("You're not connected to Morph Testnet");
+      toast.error("You're not connected to Bsc Testnet");
       return;
     }
 

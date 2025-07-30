@@ -6,6 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
+import { ContextProvider } from "../context/ContextProvider";
 
 const Home = lazy(() => import("../pages/Home"));
 const DashboardLayout = lazy(() => import("../layout/DashboardLayout"));
@@ -47,10 +48,12 @@ const router = createBrowserRouter(
 
 const AllRoutes = () => {
   return (
-    <div className="mx-auto bg-primary/50 font-opensans max-w-[1512px] text-[#0F160F]">
+    <div className="mx-auto bg-light font-opensans max-w-[1550px] text-[#0F160F]">
+      <ContextProvider>
       <Suspense fallback={<Loader />}>
         <RouterProvider router={router} />
       </Suspense>
+      </ContextProvider>
     </div>
   );
 };

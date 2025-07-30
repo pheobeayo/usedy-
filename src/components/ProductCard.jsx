@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
-import useGetAllProduct from "../hooks/useGetAllProduct";
+
 import { formatUnits } from "ethers";
+import { useProduct } from "../context/ContextProvider";
 
 const ProductCard = () => {
-  const { allProduct } = useGetAllProduct();
+  const { products } = useProduct();
 
   return (
     <div className="flex lg:flex-row md:flex-row flex-col justify-between items-center my-10 flex-wrap">
-      {allProduct.map((info) => (
+      {products.map((info) => (
         <div className="lg:w-[32%] md:w-[32%] w-[100%] p-4 border border-[#0F160F]/20 rounded-lg mb-4 shadow-lg"  key={info.id}>
           <Link
             to={`/dashboard/market_place/${info.id}`}
@@ -28,7 +29,7 @@ const ProductCard = () => {
             <p className="flex justify-between my-4">
               Seller's location <span>{info.location}</span>
             </p>
-            <p className="flex justify-between my-4 font-bold">
+            <p className="flex justify-between my-4 font-bold truncate">
               Price <span>{formatUnits(info.price)}ETH</span>{" "}
             </p>
             <button className="my-4 border w-[100%] py-2 px-4 border-[#0C3B45] text-[#0C3B45] rounded-lg">

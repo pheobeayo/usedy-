@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import useAddProduct from "../hooks/useAddProduct";
 import usePinataUpload from "../hooks/usePinataUpload";
 import LoadingSpinner from "./Loader/LoadingSpinner";
+import { RiImageAddFill } from "react-icons/ri";
 const style = {
   position: "absolute",
   top: "50%",
@@ -26,7 +27,6 @@ const AddProduct = () => {
   const handleAdd = useAddProduct();
   const { uploadToPinata, isUploading } = usePinataUpload();
 
-  // Removed unused selectedFile state
   const [imageUrl, setImageUrl] = useState("");
   const [productName, setProductName] = useState("");
   const [productWeight, setProductWeight] = useState("");
@@ -44,6 +44,11 @@ const AddProduct = () => {
     setProductWeight("");
     handleClose();
   };
+
+  const convertIpfsUrl = (url) =>
+    url.startsWith("ipfs://")
+      ? url.replace("ipfs://", "https://ipfs.io/ipfs/")
+      : url;
 
   const changeHandler = async (event) => {
     const file = event.target.files[0];
@@ -71,7 +76,6 @@ const AddProduct = () => {
       >
         Add New Products
       </button>
-
       <Modal
         open={open}
         onClose={handleClose}
@@ -79,39 +83,64 @@ const AddProduct = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <label className="form-label font-bold text-[20px] font-titiliumweb">
-            Select a Product Image
-          </label>
-          <p className="mb-2">Image URL (Below 1mb)</p>
-          {imageUrl ? (
-            <input
-              type="text"
-              value={imageUrl}
-              placeholder="Organization Image"
-              className="border mb-4 border-white/20 w-[100%] rounded-md hover:outline-0 p-3"
-              readOnly
-            />
-          ) : (
-            <div className="relative mb-4 w-[100%]">
+          <p className="font-bold text-[24px] text-center font-titiliumweb my-6">
+            List Product
+          </p>
+          <label>Select a Product Image (Image URL (Below 1mb))</label>
+          <div className="mb-4 w-full relative">
+            {imageUrl ? (
+              <div className="relative w-[150px] mx-auto h-26 border border-white/20 rounded-md overflow-hidden">
+                <img
+                  src={convertIpfsUrl(imageUrl)}
+                  alt="Uploaded"
+                  className="object-cover w-full h-full"
+                />
+                <button
+                  onClick={() => document.getElementById("fileInput").click()}
+                  className="absolute bottom-0 right-0 bg-black/80 p-2 rounded-full hover:bg-black/70 transition"
+                  title="Change image"
+                >
+                  <RiImageAddFill className="text-white text-xl" />
+                </button>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={changeHandler}
+                  className="hidden"
+                  disabled={isUploading}
+                />
+              </div>
+            ) : (
+              <div
+                className="w-[150px] my-3 mx-auto flex items-center justify-center h-26 rounded-lg border border-white/20 cursor-pointer hover:border-[#aaa] transition"
+                onClick={() => document.getElementById("fileInput").click()}
+              >
+                <RiImageAddFill className="text-[64px] text-white/70" />
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={changeHandler}
+                  className="hidden"
+                  disabled={isUploading}
+                />
+              </div>
+            )}
+            {isUploading && (
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-md">
+                <LoadingSpinner />
+              </div>
+            )}
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+            {imageUrl && (
               <input
-                type="file"
-                required
-                onChange={changeHandler}
-                className={`border mb-4 border-white/20 bg-transparent w-[100%] rounded-md hover:outline-0 p-3 ${
-                  isUploading ? "cursor-not-allowed" : ""
-                }`}
-                disabled={isUploading}
+                type="text"
+                value={imageUrl}
+                className="mt-4 hidden border border-white/20 w-full rounded-md p-3 text-sm bg-transparent text-white"
               />
-              {isUploading && (
-                <div className="absolute inset-0 flex items-center justify-center rounded-lg">
-                  <div className="loader"><LoadingSpinner /></div>
-                </div>
-              )}
-              {error && (
-                <p className="text-red-500 text-sm mt-2">{error}</p>
-              )}
-            </div>
-          )}
+            )}
+          </div>
           <p className="mb-2">Product Name</p>
           <input
             type="text"
