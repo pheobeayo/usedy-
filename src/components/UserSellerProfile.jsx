@@ -10,7 +10,6 @@ const UserSellerProfile = () => {
   const { address } = useAppKitAccount();
   const [isLoading, setIsLoading] = useState(true);
   const { sellers, products } = useProduct()
-  console.log(sellers, "Product:", products)
 
   useEffect(() => {
     if (products.length > 0 && sellers.length > 0) {

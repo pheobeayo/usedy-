@@ -5,16 +5,24 @@ import { toast } from "react-toastify";
 import { morphHolesky } from "@reown/appkit/networks";
 import { ErrorDecoder } from "ethers-decode-error";
 import abi from "../constants/abi.json";
+import { useProduct } from "../context/ContextProvider";
 
 const useEditProduct = () => {
   const contract = useContractInstance(true);
   const { address } = useAppKitAccount();
   const { chainId } = useAppKitNetwork();
   const errorDecoder = ErrorDecoder.create([abi]);
+  const { refreshProducts } = useProduct();
 
   return useCallback(
     async (id, productName, imageUrl, productDesc, amount, productWeight) => {
-      if (!productName || !imageUrl || !productDesc || !amount || !productWeight) {
+      if (
+        !productName ||
+        !imageUrl ||
+        !productDesc ||
+        !amount ||
+        !productWeight
+      ) {
         toast.error("Invalid input!");
         return;
       }
@@ -35,16 +43,22 @@ const useEditProduct = () => {
       }
 
       try {
-        const tx = await contract.updateProduct(id, productName, imageUrl, productDesc, amount, productWeight);
+        const tx = await contract.updateProduct(
+          id,
+          productName,
+          imageUrl,
+          productDesc,
+          amount,
+          productWeight
+        );
         const receipt = await tx.wait();
 
         if (receipt.status === 1) {
           toast.success("Product Edit Successful");
-          return;
+          refreshProducts();
+        } else {
+          toast.error("Failed to edit product");
         }
-
-        toast.error("Failed to edit product");
-        return;
       } catch (err) {
         const decodedError = await errorDecoder.decode(err);
         toast.error(`Failed to edit Product - ${decodedError.reason}`, {

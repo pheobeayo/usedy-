@@ -13,8 +13,9 @@ import TabPanel from '@mui/lab/TabPanel';
 const Transactions = () => {
   const navigate = useNavigate();
   const { address } = useAppKitAccount();
-  const { products, sellers } = useProduct();
+  const { products, sellers, purchase } = useProduct();
   const [value, setValue] = useState('1');
+  console.log(purchase)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

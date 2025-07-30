@@ -5,12 +5,14 @@ import { toast } from "react-toastify";
 import { morphHolesky } from "@reown/appkit/networks";
 import { ErrorDecoder } from "ethers-decode-error";
 import abi from "../constants/abi.json";
+import { useProduct } from "../context/ContextProvider";
 
 const useEditProfile = () => {
   const contract = useContractInstance(true);
   const { address } = useAppKitAccount();
   const { chainId } = useAppKitNetwork();
   const errorDecoder = ErrorDecoder.create([abi]);
+  const { refreshSellers } = useProduct();
 
   return useCallback(
     async (location, mail) => {
@@ -40,11 +42,11 @@ const useEditProfile = () => {
 
         if (receipt.status === 1) {
           toast.success("Profile Edit Successful");
-          return;
+          refreshSellers();
         }
-
-        toast.error("Failed to edit Profile");
-        return;
+        else {
+          toast.error("Failed to edit Profile");
+        }
       } catch (err) {
         const decodedError = await errorDecoder.decode(err);
         toast.error(`Failed to edit Profile - ${decodedError.reason}`, {

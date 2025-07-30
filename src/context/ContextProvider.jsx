@@ -9,11 +9,12 @@ const ProductContext = createContext();
 // Context Provider
 export const ContextProvider = ({ children }) => {
   const contract = useContractInstance(true);
-  const { isConnected } = useAppKitAccount();
+  const { isConnected, address } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
 
   const [products, setProducts] = useState([]);
   const [sellers, setSellers] = useState([]);
+  const [purchaseId, setPurchaseId] = useState([]);
 
   // Fetch all products
   const refreshProducts = async () => {
@@ -66,10 +67,24 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+   // Fetch all user purchases
+   const refreshPurchase = async () => {
+    if (!isConnected || !walletProvider || !contract) return;
+    try {
+      const data = await contract.getBuyersProductId(address);
+     
+      setPurchaseId(data);
+    } catch (err) {
+      console.error("Failed to fetch sellers:", err);
+      setSellers([]);
+    }
+  };
+
   // Initial fetch
   useEffect(() => {
     refreshProducts();
     refreshSellers();
+    refreshPurchase();
   }, [isConnected, walletProvider, contract]);
 
   // 🔥 Auto-refresh on blockchain events
@@ -84,6 +99,8 @@ export const ContextProvider = ({ children }) => {
         products,
         setProducts,
         refreshProducts,
+        purchaseId,
+        refreshPurchase,
         sellers,
         setSellers,
         refreshSellers,
