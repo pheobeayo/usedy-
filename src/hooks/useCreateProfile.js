@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import useContractInstance from "./useContractInstance";
 import { useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react";
 import { toast } from "react-toastify";
-import { bscTestnet } from "@reown/appkit/networks";
+import { morphHolesky } from "@reown/appkit/networks";
 import { ErrorDecoder } from "ethers-decode-error";
 import abi from "../constants/abi.json";
 
@@ -29,8 +29,8 @@ const useCreateProfile = () => {
         return;
       }
 
-      if (Number(chainId) !== Number(bscTestnet.id)) {
-        toast.error("You're not connected to BSC Testnet");
+      if (Number(chainId) !== Number(morphHolesky.id)) {
+        toast.error("You're not connected to morph Testnet");
         return;
       }
 
