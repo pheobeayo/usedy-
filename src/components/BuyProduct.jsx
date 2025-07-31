@@ -1,7 +1,11 @@
 import { useState, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from "@reown/appkit/react";
+import {
+  useAppKitAccount,
+  useAppKitNetwork,
+  useAppKitProvider,
+} from "@reown/appkit/react";
 import { toast } from "react-toastify";
 import { morphHolesky } from "@reown/appkit/networks";
 import { ErrorDecoder } from "ethers-decode-error";
@@ -32,7 +36,6 @@ const BuyProduct = ({ id, price }) => {
   const errorDecoder = ErrorDecoder.create([abi]);
   const { walletProvider } = useAppKitProvider("eip155");
 
-  
   const totalAmount = useMemo(() => {
     if (!amount || !price || isNaN(Number(amount)) || Number(amount) <= 0) {
       return "0";
@@ -47,61 +50,70 @@ const BuyProduct = ({ id, price }) => {
     }
   }, [amount, price]);
 
-  const handleBuyProduct = useCallback(async (id, amount) => {
-    if (!id || !amount || isNaN(Number(amount)) || Number(amount) <= 0) {
-      toast.error("Please enter a valid amount!");
-      return;
-    }
-
-    if (!address) {
-      toast.error("Please connect your wallet");
-      return;
-    }
-
-    if (Number(chainId) !== Number(morphHolesky.id)) {
-      toast.error("You're not connected to Bsc Testnet");
-      return;
-    }
-
-    const getProvider = (provider) => new ethers.BrowserProvider(provider);
-    const readWriteProvider = getProvider(walletProvider);
-    const signer = await readWriteProvider.getSigner();
-
-    const contract = new Contract(
-      import.meta.env.VITE_CONTRACT_ADDRESS,
-      abi,
-      signer
-    );
-
-    const total = ethers.parseUnits(price.toString(), 18) * BigInt(Math.floor(Number(amount)));
-
-    try {
-      const transaction = await contract.buyProduct(id, Math.floor(Number(amount)), {
-        value: total,
-      });
-
-      const receipt = await transaction.wait();
-
-      if (receipt.status) {
-        return toast.success("Product purchase successful!", {
-          position: "top-center",
-        });
+  const handleBuyProduct = useCallback(
+    async (id, amount) => {
+      if (!id || !amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+        toast.error("Please enter a valid amount!");
+        return;
       }
 
-      toast.error("Product purchase failed", {
-        position: "top-center",
-      });
-    } catch (err) {
-      const decodedError = await errorDecoder.decode(err);
-      toast.error(`Product purchase failed - ${decodedError.reason}`, {
-        position: "top-center",
-      });
-      console.log(decodedError.reason);
-    } finally {
-      setAmount("");
-      setOpen(false);
-    }
-  }, [address, chainId, walletProvider, price, errorDecoder]);
+      if (!address) {
+        toast.error("Please connect your wallet");
+        return;
+      }
+
+      if (Number(chainId) !== Number(morphHolesky.id)) {
+        toast.error("You're not connected to Bsc Testnet");
+        return;
+      }
+
+      const getProvider = (provider) => new ethers.BrowserProvider(provider);
+      const readWriteProvider = getProvider(walletProvider);
+      const signer = await readWriteProvider.getSigner();
+
+      const contract = new Contract(
+        import.meta.env.VITE_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+
+      const total =
+        ethers.parseUnits(price.toString(), 18) *
+        BigInt(Math.floor(Number(amount)));
+
+      try {
+        const transaction = await contract.buyProduct(
+          id,
+          Math.floor(Number(amount)),
+          {
+            value: total,
+          }
+        );
+
+        const receipt = await transaction.wait();
+
+        if (receipt.status) {
+          toast.success("Product purchase successful!", {
+            position: "top-center",
+          });
+        } else {
+          toast.error("Product purchase failed", {
+            position: "top-center",
+          });
+        }
+      } catch (err) {
+        const decodedError = await errorDecoder.decode(err);
+        toast.error(`Product purchase failed - ${decodedError.reason}`, {
+          position: "top-center",
+        });
+        console.log(decodedError.reason);
+      } finally {
+        setAmount("");
+        setOpen(false);
+      }
+    },
+    [address, chainId, walletProvider, price, errorDecoder]
+  );
 
   return (
     <div>
@@ -119,7 +131,9 @@ const BuyProduct = ({ id, price }) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <h2 className="text-white text-xl font-bold mb-4">Purchase Product</h2>
+            <h2 className="text-white text-xl font-bold mb-4">
+              Purchase Product
+            </h2>
 
             <input
               type="text"
@@ -130,7 +144,9 @@ const BuyProduct = ({ id, price }) => {
             />
 
             <div className="mb-4">
-              <label className="text-white text-sm mb-2 block">Price per item:</label>
+              <label className="text-white text-sm mb-2 block">
+                Price per item:
+              </label>
               <div className="text-white bg-[#2E343A] rounded-lg p-4 border border-white/50">
                 {price} ETH
               </div>
@@ -151,7 +167,9 @@ const BuyProduct = ({ id, price }) => {
             <div className="mb-4 p-4 bg-[#073F77] rounded-lg border-2 border-[#0C3B45]">
               <div className="flex justify-between items-center">
                 <span className="text-white font-semibold">Total Amount:</span>
-                <span className="text-white font-bold text-lg">{totalAmount} ETH</span>
+                <span className="text-white font-bold text-lg">
+                  {totalAmount} ETH
+                </span>
               </div>
               {amount && Number(amount) > 0 && (
                 <div className="text-sm text-gray-300 mt-2">

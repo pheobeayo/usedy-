@@ -8,14 +8,14 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-
+import emptyCart from "../../assets/cart.png"
+import { formatUnits } from "ethers";
 
 const Transactions = () => {
   const navigate = useNavigate();
   const { address } = useAppKitAccount();
-  const { products, sellers, purchase } = useProduct();
+  const { products, sellers, purchaseId } = useProduct();
   const [value, setValue] = useState('1');
-  console.log(purchase)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -24,6 +24,7 @@ const Transactions = () => {
 
   const [buyerAddress, setBuyerAddress] = useState(`${address}`);
   const userSeller = sellers.find((data) => data?.address.toLowerCase() === address.toLowerCase());
+  const userPurchase = products.find((item) => item.id === Number(purchaseId))
 
  
   return (
@@ -66,35 +67,34 @@ const Transactions = () => {
           </TabList>
         </Box>
         <TabPanel value="1">
-    {/* <section className="text-[#0F160F] flex lg:flex-row md:flex-row flex-col justify-between">
-    {purchase?.length === 0 ? (
+    <section className="text-[#0F160F] flex lg:flex-row md:flex-row flex-col justify-between">
+    {purchaseId?.length === 0 ? (
       <div className="flex flex-col items-center w-full text-[rgb(15,22,15)]">
-          <img src={emptyPurchase} alt="" />
+          <img src={emptyCart} alt="" />
           <p>No purchase yet</p>
           </div>
-        ) : (purchase?.map((p, index) => {
-          const userPurchase = allProduct.find((data) => data?.id === p.id);
-          return (
-            <div key={index} className="border p-4 mb-4 rounded-lg shadow-md lg:w-[32%] md:w-[32%] w-[100%]">
-              <p className="my-4"><strong>Quantity:</strong> {p.quantity}</p>
-              {userPurchase ? (
+        ) : (
+          
+            <div className="border p-4 mb-4 rounded-lg shadow-md lg:w-[32%] md:w-[32%] w-[100%]">
+              <p className="my-4"><strong>Quantity:</strong> {userPurchase.quantity}</p>
                 <div>
                   <img src={userPurchase.image} alt="" className="w-[300px] h-[300px] mb-4" />
                   <p><strong>Product Name:</strong> {userPurchase.name}</p>
-                  <p className='flex justify-between my-4 font-bold'>Price <span>{formatUnits(userPurchase.price)}ETH</span> </p>
+                  <p className='flex justify-between my-4 font-bold truncate'>Price <span>{formatUnits(userPurchase.price)}ETH</span> </p>
                 </div>
-              ) : (
+          
+              {/* : (
                 <p>Product details not available.</p>
-              )}
-              {approved?.map((item) => {
+              )} */}
+              {/* {approved?.map((item) => {
         return item.address !== address ? (
           <ApprovePayment key={item.id} id={p.id} index={index} />
         ) : null;
-      })}
+      })} */}
             </div>
-          );
-        }))}
-      </section> */}
+          )
+        }
+      </section>
       </TabPanel>
         <TabPanel value="2">
         {/* <section className="text-[#0F160F] flex lg:flex-row md:flex-row flex-col justify-between">

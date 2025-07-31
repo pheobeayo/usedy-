@@ -72,11 +72,13 @@ export const ContextProvider = ({ children }) => {
     if (!isConnected || !walletProvider || !contract) return;
     try {
       const data = await contract.getBuyersProductId(address);
-     
+      const formatted = data.map((id) => ({
+        id: id.toString(),
+      }))
       setPurchaseId(data);
     } catch (err) {
       console.error("Failed to fetch sellers:", err);
-      setSellers([]);
+      setPurchaseId([]);
     }
   };
 
@@ -92,6 +94,7 @@ export const ContextProvider = ({ children }) => {
   useContractEvent(contract, "ProductUpdated", refreshProducts);
   useContractEvent(contract, "ProfileCreated", refreshSellers);
   useContractEvent(contract, "ProfileUpdated", refreshSellers);
+  useContractEvent(contract, "ProductBought", refreshPurchase)
 
   return (
     <ProductContext.Provider
