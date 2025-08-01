@@ -31,7 +31,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[#263E59] text-white p-8 py-12 hidden lg:flex md:flex flex-col">
+    <div className="bg-[#263E59] text-white p-8 py-12 hidden h-full w-[100%] lg:flex md:flex flex-col overflow-y-auto no-scrollbar">
       <img src={logo} alt="logo" className="mb-10 w-[150px]" />
       <div className="text-[14px] mb-10  px-6 ">
       <p className="text-[14px] text-white items-center py-2 font-bold">
