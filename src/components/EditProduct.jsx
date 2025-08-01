@@ -17,6 +17,8 @@ const style = {
   boxShadow: 24,
   border: "1px solid #42714262",
   backgroundColor: "#1E1D34",
+  maxHeight: "90vh",        
+  overflowY: "auto",  
   p: 4,
 };
 

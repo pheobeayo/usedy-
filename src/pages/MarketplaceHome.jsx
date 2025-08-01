@@ -8,7 +8,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const MarketplaceHome = () => {
   const { product } = useGetProduct();
-  console.log(product)
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 

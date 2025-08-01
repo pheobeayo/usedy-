@@ -21,6 +21,8 @@ const style = {
   width: 400,
   borderRadius: 10,
   boxShadow: 24,
+  maxHeight: "90vh",        
+  overflowY: "auto",  
   border: "1px solid #42714262",
   backgroundColor: "#1E1D34",
   p: 4,
