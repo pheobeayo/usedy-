@@ -48,12 +48,14 @@ const router = createBrowserRouter(
 
 const AllRoutes = () => {
   return (
-    <div className="mx-auto bg-light font-opensans max-w-[1550px] text-[#0F160F]">
-      <ContextProvider>
-      <Suspense fallback={<Loader />}>
-        <RouterProvider router={router} />
-      </Suspense>
-      </ContextProvider>
+    <div className="min-h-screen w-full bg-light font-opensans text-[#0F160F]">
+      <div className="mx-auto w-full max-w-[1550px] 2xl:max-w-[1800px] 3xl:max-w-none 3xl:px-8">
+        <ContextProvider>
+          <Suspense fallback={<Loader />}>
+            <RouterProvider router={router} />
+          </Suspense>
+        </ContextProvider>
+      </div>
     </div>
   );
 };
