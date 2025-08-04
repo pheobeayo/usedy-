@@ -99,3 +99,6 @@ With a decentralised marketplace functionality and blockchain technology to ince
 UsedyToken deployed to 0x951fAa8B5E040DdC3f0489D00CF1E66be2355b25
 
 UsedyContract deployed to 0x7FEa3580063ecA42958ebaB5e4035bEBB109dD12
+
+### Demo Link
+https://youtu.be/8c1naCsZzXw
