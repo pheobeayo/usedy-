@@ -17,3 +17,15 @@
 * {
   box-sizing: border-box;
 }
+
+.contain {
+  max-width: 1800px;
+}
+
+.custom-range {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 100%;
+  outline: none;
+  
+}
